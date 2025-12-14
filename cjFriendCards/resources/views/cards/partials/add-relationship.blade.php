@@ -32,7 +32,7 @@
             <select name="relationship_type" id="relationship_type" required 
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
                 <option value="">Select a relationship type</option>
-                <option value="best_friend">Best Friend</option>
+                <option value="friend">Friend</option>
                 <option value="colleague">Colleague</option>
                 <option value="family">Family</option>
                 <option value="spouse">Spouse</option>

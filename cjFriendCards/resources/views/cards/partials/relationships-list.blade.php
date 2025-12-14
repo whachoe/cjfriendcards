@@ -85,7 +85,7 @@
                 <label for="edit_relationship_type" class="block text-sm font-medium text-gray-700 mb-2">Relationship Type *</label>
                 <select name="relationship_type" id="edit_relationship_type" required 
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                    <option value="best_friend">Best Friend</option>
+                    <option value="friend">Friend</option>
                     <option value="colleague">Colleague</option>
                     <option value="family">Family</option>
                     <option value="spouse">Spouse</option>
