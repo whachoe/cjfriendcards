@@ -234,23 +234,3 @@ curl http://localhost:8000/api/v1/export/birthdays/ical > birthdays.ics
 ```bash
 curl http://localhost:8000/api/v1/cards/1/export/vcard > jane_smith.vcf
 ```
-
-## Contributing
-
-Follow the commit message guidelines based on your branch:
-- Feature branches: Use imperative mood, start with "feat:"
-- Bugfix branches: Start with "fix:"
-- Other work: Start with "chore:"
-
-Before committing:
-1. Ensure no merge conflict markers exist
-2. Check that "DELME" is not in your commit message
-3. Avoid duplicate "Signed-off-by" lines
-
-## License
-
-This project is private and not currently licensed for public use.
-
-## Support
-
-For issues or questions, please refer to the copilot instructions in `.github/copilot-instructions.md`.

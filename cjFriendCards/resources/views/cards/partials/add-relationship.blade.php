@@ -1,12 +1,12 @@
 <!-- Add Relationship Form -->
-<div class="bg-white rounded-lg shadow p-6">
-    <h3 class="text-lg font-semibold text-gray-900 mb-4">Add New Relationship</h3>
+<div class="bg-[#fef3c7] rounded-lg shadow p-6 border border-[#ff6b35]">
+    <h3 class="text-lg font-semibold text-[#8b4513] mb-4">Add New Relationship</h3>
     
     <form action="{{ route('relationships.store', $card) }}" method="POST" hx-boost="true">
         @csrf
         
         <div class="mb-4">
-            <label for="related_card_id" class="block text-sm font-medium text-gray-700 mb-2">Card *</label>
+            <label for="related_card_id" class="block text-sm font-medium text-[#8b4513] mb-2">Card *</label>
             <input 
                 type="hidden" 
                 name="related_card_id" 
@@ -19,18 +19,18 @@
                 id="unique_name_search" 
                 placeholder="Search by card name..." 
                 autocomplete="off"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                class="w-full px-4 py-2 border border-[#ff6b35] rounded-lg focus:outline-none focus:border-[#d7263d]"
             />
-            <div id="autocomplete_results" class="mt-2 border border-gray-300 rounded-lg hidden max-h-48 overflow-y-auto bg-white"></div>
+            <div id="autocomplete_results" class="mt-2 border border-[#ff6b35] rounded-lg hidden max-h-48 overflow-y-auto bg-[#fef3c7]"></div>
             @error('related_card_id')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                <p class="text-[#d7263d] text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
         <div class="mb-4">
-            <label for="relationship_type" class="block text-sm font-medium text-gray-700 mb-2">Relationship Type *</label>
+            <label for="relationship_type" class="block text-sm font-medium text-[#8b4513] mb-2">Relationship Type *</label>
             <select name="relationship_type" id="relationship_type" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                    class="w-full px-4 py-2 border border-[#ff6b35] rounded-lg focus:outline-none focus:border-[#d7263d]">
                 <option value="">Select a relationship type</option>
                 <option value="friend">Friend</option>
                 <option value="colleague">Colleague</option>
@@ -42,20 +42,20 @@
                 <option value="ex-partner">Ex-Partner</option>
             </select>
             @error('relationship_type')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                <p class="text-[#d7263d] text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
         <div class="mb-4">
-            <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+            <label for="notes" class="block text-sm font-medium text-[#8b4513] mb-2">Notes</label>
             <textarea name="notes" id="notes" rows="2" 
-                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"></textarea>
+                      class="w-full px-4 py-2 border border-[#ff6b35] rounded-lg focus:outline-none focus:border-[#d7263d]"></textarea>
             @error('notes')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                <p class="text-[#d7263d] text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
-        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Add Relationship</button>
+        <button type="submit" class="bg-[#ff6b35] text-white px-6 py-2 rounded hover:bg-[#d7263d]">Add Relationship</button>
     </form>
 </div>
 
@@ -81,14 +81,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const cards = await response.json();
             
             if (cards.length === 0) {
-                resultsDiv.innerHTML = '<div class="p-2 text-gray-500">No results found</div>';
+                resultsDiv.innerHTML = '<div class="p-2 text-[#d7263d]">No results found</div>';
                 resultsDiv.classList.remove('hidden');
                 return;
             }
 
             resultsDiv.innerHTML = cards.map(card => `
                 <div 
-                    class="p-2 cursor-pointer hover:bg-blue-50 border-b last:border-b-0"
+                    class="p-2 cursor-pointer hover:bg-[#fef3c7] border-b last:border-b-0"
                     onclick="selectCard(${card.id}, '${card.unique_name}')"
                 >
                     ${card.display}
