@@ -3,8 +3,12 @@
 @section('title', 'Friendship Cards')
 
 @section('content')
-<div class="mb-6">
+<div class="mb-6 flex justify-between items-center">
     <h1 class="text-3xl font-bold text-[#8b4513]">Friendship Cards</h1>
+    <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="bg-[#ff6b35] text-white px-4 py-2 rounded hover:bg-[#d7263d] flex items-center gap-2">
+        <span>Sort by Last Name</span>
+        <span class="text-sm">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+    </a>
 </div>
 
 @if ($cards->isEmpty())

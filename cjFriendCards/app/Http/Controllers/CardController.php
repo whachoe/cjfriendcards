@@ -12,10 +12,12 @@ class CardController extends Controller
     /**
      * Display a listing of all cards.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $cards = Card::all();
-        return view('cards.index', compact('cards'));
+        $sortOrder = $request->query('sort_order', 'asc');
+        $nextSortOrder = $sortOrder === 'asc' ? 'desc' : 'asc';
+        $cards = Card::orderBy('last_name', $sortOrder)->get();
+        return view('cards.index', compact('cards', 'sortOrder', 'nextSortOrder'));
     }
 
     /**
