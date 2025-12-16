@@ -1,6 +1,6 @@
 <!-- Relationships List -->
-<div class="bg-[#fef3c7] rounded-lg shadow p-6 border border-[#ff6b35]">
-    <h3 class="text-lg font-semibold text-[#8b4513] mb-4">Relationships</h3>
+<div class="bg-primary-light rounded-lg shadow p-6 border border-primary-accent">
+    <h3 class="text-lg font-semibold text-primary-dark mb-4">Relationships</h3>
 
     @php
         $allRelationships = collect();
@@ -13,37 +13,37 @@
     @endphp
 
     @if ($allRelationships->isEmpty())
-        <p class="text-[#d7263d] text-center py-4">No relationships yet. Add one below!</p>
+        <p class="text-primary-danger text-center py-4">No relationships yet. Add one below!</p>
     @else
         <div class="space-y-3">
             {{-- Direct relationships (where this card is card_id) --}}
             @foreach ($relationships ?? [] as $rel)
-                <div class="p-4 bg-[#fef3c7] rounded border border-[#ff6b35] flex justify-between items-start">
+                <div class="p-4 bg-primary-light rounded border border-primary-accent flex justify-between items-start">
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-1">
-                            <a href="{{ route('cards.show', $rel->relatedCard) }}" class="text-[#ff6b35] hover:underline font-medium">
+                            <a href="{{ route('cards.show', $rel->relatedCard) }}" class="text-primary-accent hover:underline font-medium">
                                 {{ $rel->relatedCard->full_name }}
                             </a>
-                            <span class="bg-[#fef3c7] text-[#8b4513] text-xs font-semibold px-2 py-1 rounded border border-[#ff6b35]">
+                            <span class="bg-primary-light text-primary-dark text-xs font-semibold px-2 py-1 rounded border border-primary-accent">
                                 {{ ucfirst(str_replace('_', ' ', $rel->relationship_type)) }}
                             </span>
                         </div>
                         @if ($rel->notes)
-                            <p class="text-sm text-[#8b4513]">{{ $rel->notes }}</p>
+                            <p class="text-sm text-primary-dark">{{ $rel->notes }}</p>
                         @endif
                     </div>
                     <div class="flex gap-2 ml-4">
                         <button 
                             type="button"
                             onclick="editRelationship({{ $rel->id }})"
-                            class="text-[#8b4513] hover:text-[#d7263d] text-sm"
+                            class="text-primary-dark hover:text-primary-danger text-sm"
                         >
                             ✎
                         </button>
                         <form action="{{ route('relationships.destroy', [$card, $rel]) }}" method="POST" class="inline" onsubmit="return confirm('Delete this relationship?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-[#d7263d] hover:text-[#8b4513] text-sm">✕</button>
+                            <button type="submit" class="text-primary-danger hover:text-primary-dark text-sm">✕</button>
                         </form>
                     </div>
                 </div>
@@ -51,19 +51,19 @@
 
             {{-- Inverse relationships (where this card is related_card_id) --}}
             @foreach ($relatedRelationships ?? [] as $rel)
-                <div class="p-4 bg-[#fef3c7] rounded border border-[#ff6b35] flex justify-between items-start opacity-75">
+                <div class="p-4 bg-primary-light rounded border border-primary-accent flex justify-between items-start opacity-75">
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-1">
-                            <a href="{{ route('cards.show', $rel->card) }}" class="text-[#ff6b35] hover:underline font-medium">
+                            <a href="{{ route('cards.show', $rel->card) }}" class="text-primary-accent hover:underline font-medium">
                                 {{ $rel->card->full_name }}
                             </a>
-                            <span class="bg-[#fef3c7] text-[#8b4513] text-xs font-semibold px-2 py-1 rounded border border-[#ff6b35]">
+                            <span class="bg-primary-light text-primary-dark text-xs font-semibold px-2 py-1 rounded border border-primary-accent">
                                 {{ ucfirst(str_replace('_', ' ', $rel->relationship_type)) }}
                             </span>
-                            <span class="text-xs text-[#d7263d] italic">(connected by them)</span>
+                            <span class="text-xs text-primary-danger italic">(connected by them)</span>
                         </div>
                         @if ($rel->notes)
-                            <p class="text-sm text-[#8b4513]">{{ $rel->notes }}</p>
+                            <p class="text-sm text-primary-dark">{{ $rel->notes }}</p>
                         @endif
                     </div>
                 </div>
@@ -74,17 +74,17 @@
 
 <!-- Edit Relationship Modal (hidden by default) -->
 <div id="edit_modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-[#fef3c7] rounded-lg shadow p-6 max-w-md w-full mx-4 border border-[#ff6b35]">
-        <h3 class="text-lg font-semibold text-[#8b4513] mb-4">Edit Relationship</h3>
+    <div class="bg-primary-light rounded-lg shadow p-6 max-w-md w-full mx-4 border border-primary-accent">
+        <h3 class="text-lg font-semibold text-primary-dark mb-4">Edit Relationship</h3>
         
         <form id="edit_form" method="POST">
             @csrf
             @method('PATCH')
             
             <div class="mb-4">
-                <label for="edit_relationship_type" class="block text-sm font-medium text-[#8b4513] mb-2">Relationship Type *</label>
+                <label for="edit_relationship_type" class="block text-sm font-medium text-primary-dark mb-2">Relationship Type *</label>
                 <select name="relationship_type" id="edit_relationship_type" required 
-                        class="w-full px-4 py-2 border border-[#ff6b35] rounded-lg focus:outline-none focus:border-[#d7263d]">
+                        class="w-full px-4 py-2 border border-primary-accent rounded-lg focus:outline-none focus:border-primary-danger">
                     <option value="friend">Friend</option>
                     <option value="colleague">Colleague</option>
                     <option value="family">Family</option>
@@ -97,14 +97,14 @@
             </div>
 
             <div class="mb-4">
-                <label for="edit_notes" class="block text-sm font-medium text-[#8b4513] mb-2">Notes</label>
+                <label for="edit_notes" class="block text-sm font-medium text-primary-dark mb-2">Notes</label>
                 <textarea name="notes" id="edit_notes" rows="2" 
-                          class="w-full px-4 py-2 border border-[#ff6b35] rounded-lg focus:outline-none focus:border-[#d7263d]"></textarea>
+                          class="w-full px-4 py-2 border border-primary-accent rounded-lg focus:outline-none focus:border-primary-danger"></textarea>
             </div>
 
             <div class="flex gap-2 justify-end">
-                <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-[#8b4513] bg-[#f5c518] rounded hover:bg-[#ff6b35]">Cancel</button>
-                <button type="submit" class="px-4 py-2 bg-[#ff6b35] text-white rounded hover:bg-[#d7263d]">Update</button>
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-primary-dark bg-primary-secondary rounded hover:bg-primary-accent">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-primary-accent text-white rounded hover:bg-primary-danger">Update</button>
             </div>
         </form>
     </div>

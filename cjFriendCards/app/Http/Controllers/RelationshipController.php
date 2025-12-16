@@ -37,7 +37,7 @@ class RelationshipController extends Controller
     {
         $validated = $request->validate([
             'related_card_id' => 'required|exists:cards,id|different:card_id',
-            'relationship_type' => 'required|in:best_friend,colleague,family,spouse,child,parent,acquaintance,ex-partner',
+            'relationship_type' => 'required|in:friend,colleague,family,spouse,child,parent,acquaintance,ex-partner',
             'notes' => 'nullable|string',
         ]);
 

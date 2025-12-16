@@ -26,3 +26,29 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
       });
     }
 })();
+
+// Birthday date format conversion (dd-mm-yyyy to yyyy-mm-dd)
+(function() {
+  if (document.getElementById('birthday')) {
+    document.addEventListener('DOMContentLoaded', function() {
+      const birthdayInput = document.getElementById('birthday');
+      const birthdayHidden = document.getElementById('birthday_hidden');
+
+      if (birthdayInput && birthdayHidden) {
+        birthdayInput.addEventListener('blur', function() {
+          const value = this.value.trim();
+          if (value) {
+            const parts = value.split('-');
+            if (parts.length === 3) {
+              const day = parts[0];
+              const month = parts[1];
+              const year = parts[2];
+              const isoDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+              birthdayHidden.value = isoDate;
+            }
+          }
+        });
+      }
+    });
+  }
+})();

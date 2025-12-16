@@ -74,6 +74,19 @@ Before committing:
 3. Card Creation/Edit View: Form for creating a new friendship card or editing an existing one. You can also add relationships to other cards from this view.
 4. Birthday calendar view: Displays upcoming birthdays of friends in a calendar format. Also shows the age they will be turning.
 
+## Relationships
+
+1. Many-to-Many: If needed in the future, a more complex relationship model can be implemented to allow cards to have multiple types of relationships with other cards.
+2. Some relationships are the opposite of others. For example, if Card A is marked as "parent" of Card B, then Card B should automatically be marked as "child" of Card A. Here's a list of such opposite relationships:
+   - parent <-> child
+   - spouse <-> spouse
+   - ex-partner <-> ex-partner
+   - best_friend <-> best_friend
+   - colleague <-> colleague
+   - acquaintance <-> acquaintance
+   - family <-> family
+
+
 
 ---
 *Last updated: 2025-12-14*
