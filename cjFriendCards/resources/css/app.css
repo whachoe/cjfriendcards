@@ -517,3 +517,35 @@ nav a:hover {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+/* View Toggle Buttons */
+.view-toggle {
+    background-color: white;
+    color: var(--color-dark);
+    cursor: pointer;
+    border: none;
+}
+
+.view-toggle:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-dark);
+}
+
+.view-toggle.active {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.view-toggle.active:hover {
+    background-color: var(--color-primary-hover);
+    color: white;
+}
+
+/* Table Styles */
+table {
+    border-collapse: collapse;
+}
+
+table td {
+    padding: 0.5rem 1rem;
+}

@@ -5,10 +5,21 @@
 @section('content')
 <div class="mb-6 flex justify-between items-center">
     <h1 class="text-3xl font-bold text-primary-dark">Cardbox</h1>
-    <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:bg-primary-danger flex items-center gap-2">
+    <div class="flex items-center gap-3">
         <span>Sort by Last Name</span>
-        <span class="text-sm">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
-    </a>
+        <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:bg-primary-danger flex items-center gap-2">            
+            <span class="text-sm">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+        </a>
+        <div class="flex gap-2">
+            <span class="text-sm">View:</span>
+            <button id="view-grid-btn" class="view-toggle active w-10 h-10 flex items-center justify-center transition" title="Grid view">
+                <span class="text-xl">⊞</span>
+            </button>
+            <button id="view-list-btn" class="view-toggle w-10 h-10 flex items-center justify-center transition" title="List view">
+                <span class="text-xl">≡</span>
+            </button>
+        </div>
+    </div>
 </div>
 
 @if ($cards->isEmpty())
@@ -17,7 +28,8 @@
         <a href="{{ route('cards.create') }}" class="bg-primary-accent text-white px-6 py-2 rounded hover:bg-primary-danger">Create Card</a>
     </div>
 @else
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Grid View -->
+    <div id="grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach ($cards as $card)
             <div class="bg-primary-light rounded-lg shadow hover:shadow-lg transition-shadow border border-primary-accent">
                 <div class="p-6">
@@ -53,5 +65,55 @@
             </div>
         @endforeach
     </div>
+
+    <!-- List View -->
+    <div id="list-view" class="border hidden bg-primary-light border-primary-accent rounded-lg overflow-hidden">
+        <table class="w-full">
+            <tbody>
+                @foreach ($cards as $card)
+                    <tr class="hover:bg-primary-secondary transition">
+                        <td class="">
+                            <a href="{{ route('cards.show', $card) }}" class="text-primary-accent hover:text-primary-danger font-medium">{{ $card->first_name }} {{ $card->last_name }}</a>
+                        </td>
+                        <td class="text-right">
+                            <div class="flex gap-2 justify-end">
+                                <a href="{{ route('cards.show', $card) }}" class="bg-primary-accent text-white px-4 py-1 rounded text-sm hover:bg-primary-danger">View</a>
+                                <a href="{{ route('cards.edit', $card) }}" class="bg-primary-secondary text-primary-dark px-4 py-1 rounded text-sm hover:bg-primary-accent">Edit</a>
+                                <form action="{{ route('cards.destroy', $card) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-primary-danger text-white px-4 py-1 rounded text-sm hover:bg-primary-dark">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('view-grid-btn').addEventListener('click', function() {
+            document.getElementById('grid-view').classList.remove('hidden');
+            document.getElementById('list-view').classList.add('hidden');
+            document.getElementById('view-grid-btn').classList.add('active');
+            document.getElementById('view-list-btn').classList.remove('active');
+            localStorage.setItem('cardViewMode', 'grid');
+        });
+
+        document.getElementById('view-list-btn').addEventListener('click', function() {
+            document.getElementById('grid-view').classList.add('hidden');
+            document.getElementById('list-view').classList.remove('hidden');
+            document.getElementById('view-grid-btn').classList.remove('active');
+            document.getElementById('view-list-btn').classList.add('active');
+            localStorage.setItem('cardViewMode', 'list');
+        });
+
+        // Load saved view preference
+        const savedViewMode = localStorage.getItem('cardViewMode') || 'grid';
+        if (savedViewMode === 'list') {
+            document.getElementById('view-list-btn').click();
+        }
+    </script>
 @endif
 @endsection
