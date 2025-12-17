@@ -92,6 +92,10 @@
         </table>
     </div>
 
+    <div class="mt-8 flex justify-center">
+        <a href="{{ route('cards.export-csv') }}" class="bg-primary-accent text-white px-6 py-2 rounded hover:bg-primary-danger">Export All to CSV</a>
+    </div>
+
     <script>
         document.getElementById('view-grid-btn').addEventListener('click', function() {
             document.getElementById('grid-view').classList.remove('hidden');

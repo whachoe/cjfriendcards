@@ -128,4 +128,34 @@ class CardController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $card->unique_name . '.vcf"',
         ]);
     }
+
+    /**
+     * Export all cards as CSV format.
+     */
+    public function exportCsv()
+    {
+        $cards = Card::orderBy('last_name')->get();
+
+        $csv = "First Name,Last Name,Unique Name,Phone,Email (Work),Email (Personal),Email (Extra 1),Email (Extra 2),Email (Extra 3),Address,Birthday,Notes\n";
+
+        foreach ($cards as $card) {
+            $csv .= "\"" . str_replace('"', '""', $card->first_name) . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->last_name) . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->unique_name) . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->phone ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->email_work ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->email_personal ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->email_extra1 ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->email_extra2 ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->email_extra3 ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->address ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->birthday?->format('Y-m-d') ?? '') . "\",";
+            $csv .= "\"" . str_replace('"', '""', $card->notes ?? '') . "\"\n";
+        }
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="cards_' . date('Y-m-d_H-i-s') . '.csv"',
+        ]);
+    }
 }
