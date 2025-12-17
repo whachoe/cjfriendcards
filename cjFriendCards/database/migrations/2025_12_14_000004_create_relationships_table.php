@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('card_id')->constrained('cards')->onDelete('cascade');
             $table->foreignId('related_card_id')->constrained('cards')->onDelete('cascade');
             $table->enum('relationship_type', [
-                'best_friend',
+                'friend',
                 'colleague',
                 'family',
                 'spouse',
