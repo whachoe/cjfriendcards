@@ -14,6 +14,9 @@ Route::resource('cards', CardController::class);
 // Birthday calendar view
 Route::get('/birthday-calendar', [CardController::class, 'birthdayCalendar'])->name('cards.birthday-calendar');
 
+// Card export
+Route::get('/cards/{card}/export/vcard', [CardController::class, 'exportVcard'])->name('cards.export-vcard');
+
 // Relationship routes
 Route::post('/cards/{card}/relationships', [RelationshipController::class, 'store'])->name('relationships.store');
 Route::patch('/cards/{card}/relationships/{relationship}', [RelationshipController::class, 'update'])->name('relationships.update');

@@ -115,4 +115,17 @@ class CardController extends Controller
         $cards = Card::whereNotNull('birthday')->get();
         return view('cards.birthday-calendar', compact('cards'));
     }
+
+    /**
+     * Export a card as vCard format.
+     */
+    public function exportVcard(Card $card)
+    {
+        $vcard = $card->toVcard();
+
+        return response($vcard, 200, [
+            'Content-Type' => 'text/vcard; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="' . $card->unique_name . '.vcf"',
+        ]);
+    }
 }
