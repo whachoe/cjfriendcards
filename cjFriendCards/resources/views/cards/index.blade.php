@@ -7,7 +7,7 @@
     <h1 class="text-3xl font-bold text-primary-dark">Cardbox</h1>
     <div class="flex items-center gap-3">
         <span>Sort by Last Name</span>
-        <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:bg-primary-danger flex items-center gap-2">            
+        <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="text-primary-accent px-4 py-2 rounded hover:text-primary-danger flex items-center gap-2">            
             <span class="text-sm">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
         </a>
         <div class="flex gap-2">

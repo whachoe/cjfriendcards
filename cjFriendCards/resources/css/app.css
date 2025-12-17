@@ -520,25 +520,25 @@ nav a:hover {
 
 /* View Toggle Buttons */
 .view-toggle {
-    background-color: white;
+    background-color: transparent;
     color: var(--color-dark);
     cursor: pointer;
     border: none;
 }
 
 .view-toggle:hover {
-    background-color: var(--color-secondary);
+    background-color: transparent;
     color: var(--color-dark);
 }
 
 .view-toggle.active {
-    background-color: var(--color-primary);
-    color: white;
+    background-color: transparent;
+    color: var(--color-primary);
 }
 
 .view-toggle.active:hover {
-    background-color: var(--color-primary-hover);
-    color: white;
+    background-color: transparent;
+    color: var(--color-primary-hover);
 }
 
 /* Table Styles */
