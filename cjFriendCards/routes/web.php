@@ -17,6 +17,7 @@ Route::get('/birthday-calendar', [CardController::class, 'birthdayCalendar'])->n
 // Card export
 Route::get('/cards/{card}/export/vcard', [CardController::class, 'exportVcard'])->name('cards.export-vcard');
 Route::get('/cards/export/csv', [CardController::class, 'exportCsv'])->name('cards.export-csv');
+Route::get('/api/v1/export/birthdays/ical', [CardController::class, 'exportBirthdaysIcal'])->name('export.birthdays-ical');
 
 // Relationship routes
 Route::post('/cards/{card}/relationships', [RelationshipController::class, 'store'])->name('relationships.store');

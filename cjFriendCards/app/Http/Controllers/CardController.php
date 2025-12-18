@@ -202,4 +202,59 @@ class CardController extends Controller
             'Content-Disposition' => 'attachment; filename="cards_' . date('Y-m-d_H-i-s') . '.csv"',
         ]);
     }
+
+    /**
+     * Export all birthdays as iCal format.
+     */
+    public function exportBirthdaysIcal()
+    {
+        $cards = Card::whereNotNull('birthday')->orderBy('birthday')->get();
+
+        $ical = "BEGIN:VCALENDAR\r\n";
+        $ical .= "VERSION:2.0\r\n";
+        $ical .= "PRODID:-//cjFriendCards//EN\r\n";
+        $ical .= "CALSCALE:GREGORIAN\r\n";
+        $ical .= "METHOD:PUBLISH\r\n";
+        $ical .= "X-WR-CALNAME:Friend Birthdays\r\n";
+        $ical .= "X-WR-TIMEZONE:UTC\r\n";
+        $ical .= "DESCRIPTION:Birthdays of friends from cjFriendCards\r\n";
+
+        foreach ($cards as $card) {
+            $birthdayMonth = $card->birthday->format('m');
+            $birthdayDay = $card->birthday->format('d');
+            $year = now()->year;
+
+            // If birthday has already passed this year, put it in next year
+            $birthdayThisYear = \Carbon\Carbon::createFromDate($year, $birthdayMonth, $birthdayDay);
+            if ($birthdayThisYear->isPast()) {
+                $year++;
+            }
+
+            $eventDate = \Carbon\Carbon::createFromDate($year, $birthdayMonth, $birthdayDay);
+            $nextDay = $eventDate->copy()->addDay();
+            $age = (int) abs($eventDate->diffInYears($card->birthday));
+            
+            $uid = md5($card->id . '-birthday') . '@cjfriendcards.local';
+            $ical .= "BEGIN:VEVENT\r\n";
+            $ical .= "UID:" . $uid . "\r\n";
+            $ical .= "DTSTART;VALUE=DATE:" . $eventDate->format('Ymd') . "\r\n";
+            $ical .= "DTEND;VALUE=DATE:" . $nextDay->format('Ymd') . "\r\n";
+            $ical .= "DTSTAMP:" . now()->format('Ymd\THis\Z') . "\r\n";
+            $ical .= "CREATED:" . $card->created_at->format('Ymd\THis\Z') . "\r\n";
+            $ical .= "LAST-MODIFIED:" . $card->updated_at->format('Ymd\THis\Z') . "\r\n";
+            $ical .= "SUMMARY:Birthday: " . $card->full_name . "\r\n";
+            $ical .= "DESCRIPTION:" . $card->full_name . " turns " . $age . " years old\r\n";
+            $ical .= "LOCATION:\r\n";
+            $ical .= "STATUS:CONFIRMED\r\n";
+            $ical .= "SEQUENCE:0\r\n";
+            $ical .= "END:VEVENT\r\n";
+        }
+
+        $ical .= "END:VCALENDAR\r\n";
+
+        return response($ical, 200, [
+            'Content-Type' => 'text/calendar; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="birthdays_' . date('Y-m-d_H-i-s') . '.ics"',
+        ]);
+    }
 }
