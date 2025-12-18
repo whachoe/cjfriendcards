@@ -518,39 +518,34 @@ nav a:hover {
     padding-right: 1rem;
 }
 
+/* Card Background */
+.card-bg {
+    background-image: url('../images/card-bg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
 /* View Toggle Buttons */
 .view-toggle {
-    background-color: transparent;
+    background-color: white;
     color: var(--color-dark);
     cursor: pointer;
     border: none;
 }
 
 .view-toggle:hover {
-    background-color: transparent;
+    background-color: var(--color-secondary);
     color: var(--color-dark);
 }
 
 .view-toggle.active {
-    background-color: transparent;
-    color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: white;
 }
 
 .view-toggle.active:hover {
-    background-color: transparent;
-    color: var(--color-primary-hover);
-}
-
-/* Card Styles */
-.card-item {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    perspective: 1000px;
-}
-
-.card-item:hover {
-    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-8px) rotateX(2deg);
+    background-color: var(--color-primary-hover);
+    color: white;
 }
 
 /* Table Styles */
@@ -560,4 +555,9 @@ table {
 
 table td {
     padding: 0.5rem 1rem;
+}
+
+.card-item {
+    background-image: url('/card-bg.jpg');
+    background-size: 128px 128px;
 }

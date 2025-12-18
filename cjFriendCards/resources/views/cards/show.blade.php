@@ -10,8 +10,8 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Card Information -->
-    <div class="lg:col-span-2">
-        <div class="bg-primary-light rounded-lg shadow p-6 mb-6 border border-primary-accent">
+    <div class="lg:col-span-2 card-item">
+        <div class="bg-primary-light rounded-lg shadow p-6 mb-6 border border-primary-accent card-item" style="background-color: var(--color-light); background-image: url('{{ asset('images/card-bg.jpg') }}'); background-size: cover; background-attachment: fixed;">
             <h2 class="text-xl font-semibold text-primary-dark mb-4">Card Information</h2>
             
             <div class="mb-4">
@@ -79,13 +79,13 @@
 
     <!-- Sidebar -->
     <div>
-        <div class="bg-primary-light rounded-lg shadow p-6 border border-primary-accent">
+        <div class="bg-primary-light rounded-lg shadow p-6 border border-primary-accent" style="background-color: var(--color-light); background-image: url('{{ asset('images/card-bg.jpg') }}'); background-size: cover; background-attachment: fixed;">
             <h3 class="text-lg font-semibold text-primary-dark mb-4">Quick Info</h3>
             <div class="space-y-3">
-                <div class="bg-primary-light p-3 rounded border border-primary-accent">
+                <!-- <div class="bg-primary-light p-3 rounded border border-primary-accent"> -->
                     <p class="text-sm text-primary-danger">Total Relationships</p>
                     <p class="text-2xl font-bold text-primary-accent">{{ $relationships->count() + $relatedRelationships->count() }}</p>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
 

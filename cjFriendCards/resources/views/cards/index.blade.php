@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Friendship Cards')
+@section('title', 'cjFriendCards')
 
 @section('content')
 <div class="mb-6 flex justify-between items-center">
@@ -31,7 +31,7 @@
     <!-- Grid View -->
     <div id="grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach ($cards as $card)
-            <div class="bg-primary-light rounded-lg border border-primary-accent card-item">
+            <div class="rounded-lg border border-primary-accent card-item" style="background-color: var(--color-light); background-image: url('{{ asset('images/card-bg.jpg') }}'); background-size: cover; background-attachment: fixed;">
                 <div class="p-6">
                     <h2 class="text-xl font-semibold text-primary-dark mb-2">{{ $card->full_name }}</h2>
                     <p class="text-primary-danger text-sm mb-4">{{ $card->unique_name }}</p>
