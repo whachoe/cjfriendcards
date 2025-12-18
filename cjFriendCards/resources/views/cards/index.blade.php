@@ -31,7 +31,7 @@
     <!-- Grid View -->
     <div id="grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach ($cards as $card)
-            <div class="bg-primary-light rounded-lg shadow hover:shadow-lg transition-shadow border border-primary-accent">
+            <div class="bg-primary-light rounded-lg border border-primary-accent card-item">
                 <div class="p-6">
                     <h2 class="text-xl font-semibold text-primary-dark mb-2">{{ $card->full_name }}</h2>
                     <p class="text-primary-danger text-sm mb-4">{{ $card->unique_name }}</p>

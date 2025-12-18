@@ -5,7 +5,7 @@ A Laravel web application for managing and sharing virtual friendship cards with
 ## Features
 
 - **Friend Card Management**: Create, read, update, and delete friendship cards with details like name, contact info, birthday, and personal notes
-- **Relationship Tracking**: Define relationships between friends (best_friend, colleague, family, spouse, child, parent, acquaintance, ex-partner)
+- **Relationship Tracking**: Define relationships between cards (friend, colleague, family, spouse, child, parent, acquaintance, ex-partner)
 - **Birthday Calendar**: View all friend birthdays in a dedicated calendar view
 - **Export Options**:
   - Export all birthdays as iCal format for calendar integration
@@ -90,7 +90,7 @@ Represents a relationship between two friendship cards:
 - `id` (integer, primary key)
 - `card_id` (foreign key to Card)
 - `related_card_id` (foreign key to Card)
-- `relationship_type` (enum): One of: best_friend, colleague, family, spouse, child, parent, acquaintance, ex-partner
+- `relationship_type` (enum): One of: friend, colleague, family, spouse, child, parent, acquaintance, ex-partner
 - `notes` (text, nullable): Relationship-specific notes
 - `created_at` (timestamp)
 - `updated_at` (timestamp)
