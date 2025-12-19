@@ -17,6 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Switch directory
+        run: cd cjFriendCards
+        
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
