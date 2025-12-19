@@ -12,27 +12,41 @@ class CardController extends Controller
     /**
      * Display a listing of all cards.
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
         $sortOrder = $request->query('sort_order', 'asc');
         $nextSortOrder = $sortOrder === 'asc' ? 'desc' : 'asc';
         $cards = Card::orderBy('last_name', $sortOrder)->get();
+        if ($request->wantsJson()) {
+            return response()->json([
+                'data' => $cards,
+                'meta' => [
+                    'sort_order' => $sortOrder,
+                    'next_sort_order' => $nextSortOrder,
+                ],
+            ]);
+        }
+
         return view('cards.index', compact('cards', 'sortOrder', 'nextSortOrder'));
     }
 
     /**
      * Show the form for creating a new card.
      */
-    public function create(): View
+    public function create(Request $request)
     {
         $allCards = Card::all();
+        if ($request->wantsJson()) {
+            return response()->json(['data' => $allCards]);
+        }
+
         return view('cards.create', compact('allCards'));
     }
 
     /**
      * Store a newly created card in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'unique_name' => 'required|string|unique:cards,unique_name',
@@ -49,7 +63,11 @@ class CardController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        Card::create($validated);
+        $card = Card::create($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Card created successfully.', 'data' => $card], 201);
+        }
 
         return redirect()->route('cards.index')->with('success', 'Card created successfully.');
     }
@@ -57,26 +75,39 @@ class CardController extends Controller
     /**
      * Display the specified card.
      */
-    public function show(Card $card): View
+    public function show(Request $request, Card $card)
     {
         $relationships = $card->relationships()->with('relatedCard')->get();
         $relatedRelationships = $card->relatedRelationships()->with('card')->get();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'data' => $card,
+                'relationships' => $relationships,
+                'related_relationships' => $relatedRelationships,
+            ]);
+        }
+
         return view('cards.show', compact('card', 'relationships', 'relatedRelationships'));
     }
 
     /**
      * Show the form for editing the specified card.
      */
-    public function edit(Card $card): View
+    public function edit(Request $request, Card $card)
     {
         $allCards = Card::where('id', '!=', $card->id)->get();
+        if ($request->wantsJson()) {
+            return response()->json(['data' => $card, 'all' => $allCards]);
+        }
+
         return view('cards.edit', compact('card', 'allCards'));
     }
 
     /**
      * Update the specified card in storage.
      */
-    public function update(Request $request, Card $card): RedirectResponse
+    public function update(Request $request, Card $card)
     {
         $validated = $request->validate([
             'unique_name' => 'required|string|unique:cards,unique_name,' . $card->id,
@@ -95,24 +126,37 @@ class CardController extends Controller
 
         $card->update($validated);
 
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Card updated successfully.', 'data' => $card]);
+        }
+
         return redirect()->route('cards.show', $card)->with('success', 'Card updated successfully.');
     }
 
     /**
      * Remove the specified card from storage.
      */
-    public function destroy(Card $card): RedirectResponse
+    public function destroy(Request $request, Card $card)
     {
         $card->delete();
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Card deleted successfully.']);
+        }
+
         return redirect()->route('cards.index')->with('success', 'Card deleted successfully.');
     }
 
     /**
      * Display the birthday calendar view.
      */
-    public function birthdayCalendar(): View
+    public function birthdayCalendar(Request $request)
     {
         $cards = Card::whereNotNull('birthday')->get();
+        if ($request->wantsJson()) {
+            return response()->json(['data' => $cards]);
+        }
+
         return view('cards.birthday-calendar', compact('cards'));
     }
 

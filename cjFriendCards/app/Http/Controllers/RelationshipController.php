@@ -33,7 +33,7 @@ class RelationshipController extends Controller
     /**
      * Store a new relationship.
      */
-    public function store(Request $request, Card $card): RedirectResponse
+    public function store(Request $request, Card $card)
     {
         $validated = $request->validate([
             'related_card_id' => 'required|exists:cards,id|different:card_id',
@@ -47,11 +47,19 @@ class RelationshipController extends Controller
             ->exists();
 
         if ($exists) {
+            if ($request->wantsJson()) {
+                return response()->json(['errors' => ['related_card_id' => 'This relationship already exists.']], 422);
+            }
+
             return redirect()->back()->withErrors(['related_card_id' => 'This relationship already exists.']);
         }
 
         $validated['card_id'] = $card->id;
-        Relationship::create($validated);
+        $relationship = Relationship::create($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Relationship added successfully.', 'data' => $relationship], 201);
+        }
 
         return redirect()->route('cards.show', $card)->with('success', 'Relationship added successfully.');
     }
@@ -59,7 +67,7 @@ class RelationshipController extends Controller
     /**
      * Update a relationship.
      */
-    public function update(Request $request, Card $card, Relationship $relationship): RedirectResponse
+    public function update(Request $request, Card $card, Relationship $relationship)
     {
         // Ensure the relationship belongs to this card
         if ($relationship->card_id !== $card->id) {
@@ -73,13 +81,17 @@ class RelationshipController extends Controller
 
         $relationship->update($validated);
 
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Relationship updated successfully.', 'data' => $relationship]);
+        }
+
         return redirect()->route('cards.show', $card)->with('success', 'Relationship updated successfully.');
     }
 
     /**
      * Delete a relationship.
      */
-    public function destroy(Card $card, Relationship $relationship): RedirectResponse
+    public function destroy(Request $request, Card $card, Relationship $relationship)
     {
         // Ensure the relationship belongs to this card
         if ($relationship->card_id !== $card->id) {
@@ -87,6 +99,10 @@ class RelationshipController extends Controller
         }
 
         $relationship->delete();
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Relationship deleted successfully.']);
+        }
 
         return redirect()->route('cards.show', $card)->with('success', 'Relationship deleted successfully.');
     }
