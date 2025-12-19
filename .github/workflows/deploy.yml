@@ -1,0 +1,77 @@
+name: Deploy to copywaste
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy (SSH + rsync)
+    runs-on: ubuntu-latest
+    env:
+      SSH_USER: cjpa
+      SSH_HOST: copywaste.org
+      SSH_TARGET: /var/www/virtual/friendcards.copywaste.org
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, curl
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --no-interaction --optimize-autoloader
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install node dependencies
+        run: |
+          npm ci
+
+      - name: Build assets (Vite)
+        run: |
+          npm run build
+
+      - name: Prepare SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Add the remote host to known_hosts to avoid interactive prompt
+          ssh-keyscan -H ${{ env.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync files to remote (rsync)
+        run: |
+          rsync -az --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='vendor' \
+            --exclude='tests' \
+            --exclude='.github' \
+            -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes" ./ ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.SSH_TARGET }}
+
+      - name: Run remote deploy commands
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes ${{ env.SSH_USER }}@${{ env.SSH_HOST }} << 'EOF'
+            set -e
+            cd "${{ env.SSH_TARGET }}"
+            # Install composer deps on the server (production flags)
+            composer install --no-dev --optimize-autoloader --no-interaction
+            # Run migrations
+            php artisan migrate --force
+            # Cache config/routes/views as appropriate
+            php artisan config:cache || true
+            php artisan route:cache || true
+            php artisan view:cache || true
+            # Ensure storage permissions (adjust user/group if needed on your server)
+            chown -R www-data:www-data storage bootstrap/cache || true
+          EOF
