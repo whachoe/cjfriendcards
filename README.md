@@ -234,3 +234,6 @@ curl http://localhost:8000/api/v1/export/birthdays/ical > birthdays.ics
 ```bash
 curl http://localhost:8000/api/v1/cards/1/export/vcard > jane_smith.vcf
 ```
+
+### Questions? 
+File an issue or send me an email: whachoe@gmail.com 
