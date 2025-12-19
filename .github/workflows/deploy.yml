@@ -17,9 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Switch directory
-        run: cd cjFriendCards
-        
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -27,7 +24,8 @@ jobs:
           extensions: mbstring, xml, curl
 
       - name: Install Composer dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --no-interaction --optimize-autoloader
+        working-directory: cjFriendCards
+        run: composer install --no-progress --prefer-dist --no-interaction --optimize-autoloader
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -35,10 +33,12 @@ jobs:
           node-version: '18'
 
       - name: Install node dependencies
+        working-directory: cjFriendCards
         run: |
           npm ci
 
       - name: Build assets (Vite)
+        working-directory: cjFriendCards
         run: |
           npm run build
 
@@ -60,7 +60,7 @@ jobs:
             --exclude='vendor' \
             --exclude='tests' \
             --exclude='.github' \
-            -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes" ./ ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.SSH_TARGET }}
+            -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes" ./cjFriendCards/ ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.SSH_TARGET }}
 
       - name: Run remote deploy commands
         run: |
