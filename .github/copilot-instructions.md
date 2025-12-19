@@ -81,10 +81,17 @@ Before committing:
    - parent <-> child
    - spouse <-> spouse
    - ex-partner <-> ex-partner
-   - best_friend <-> best_friend
+   - friend <-> friend
    - colleague <-> colleague
    - acquaintance <-> acquaintance
    - family <-> family
+
+## Things for the AI to keep in mind
+- Follow Laravel best practices for structuring controllers, models, views, and routes.
+- Always provide tests for new features or bug fixes.
+- Run those tests to ensure they pass before finalizing any code changes.
+- Use migrations for any database schema changes.
+
 
 
 
