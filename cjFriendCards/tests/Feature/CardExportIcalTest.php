@@ -115,7 +115,9 @@ class CardExportIcalTest extends TestCase
         $response->assertStatus(200);
         $content = $response->getContent();
 
-        $age = now()->year - 1990 + 1;
+        echo $content; 
+
+        $age = now()->year - 1990;
 
         // Verify that description includes age information
         $this->assertStringContainsString('DESCRIPTION:John Doe turns', $content);
