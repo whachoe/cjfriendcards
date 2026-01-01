@@ -75,7 +75,7 @@ class RelationshipController extends Controller
         }
 
         $validated = $request->validate([
-            'relationship_type' => 'required|in:best_friend,colleague,family,spouse,child,parent,acquaintance,ex-partner',
+            'relationship_type' => 'required|in:friend,colleague,family,spouse,child,parent,acquaintance,ex-partner',
             'notes' => 'nullable|string',
         ]);
 
