@@ -18,6 +18,7 @@
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('cards.index') }}" class="text-primary-light hover:text-primary-accent">Cards</a>
                     <a href="{{ route('cards.birthday-calendar') }}" class="text-primary-light hover:text-primary-accent">Birthdays</a>
+                    <a href="{{ route('cards.relationship-graph') }}" class="text-primary-light hover:text-primary-accent">Graph</a>
                     <a href="{{ route('cards.create') }}" class="bg-primary-accent rounded hover:brightness-110 transition">New Card</a>
                 </div>
             </div>
@@ -33,5 +34,7 @@
 
         @yield('content')
     </div>
+
+    @stack('scripts')
 </body>
 </html>

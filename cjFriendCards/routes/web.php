@@ -14,6 +14,9 @@ Route::resource('cards', CardController::class);
 // Birthday calendar view
 Route::get('/birthday-calendar', [CardController::class, 'birthdayCalendar'])->name('cards.birthday-calendar');
 
+// Relationship graph view
+Route::get('/relationship-graph', [CardController::class, 'relationshipGraph'])->name('cards.relationship-graph');
+
 // Card export
 Route::get('/cards/{card}/export/vcard', [CardController::class, 'exportVcard'])->name('cards.export-vcard');
 Route::get('/cards/export/csv', [CardController::class, 'exportCsv'])->name('cards.export-csv');

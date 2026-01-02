@@ -28,10 +28,13 @@ Before committing:
 3. Remove duplicate "Signed-off-by" lines from commits
 
 ## Key Files to Reference
-- `.jj/` - Jujutsu repository configuration and index
-- `.jj/repo/store/git/` - Git backend storage
 - `.github/` - GitHub configuration and CI/CD (if added)
 - `.github/copilot-instructions.md` - This instructions file
+- cjFriendCards: Main Laravel project directory
+  - `resources/` - Frontend assets (CSS, JS, views)
+  - `app/` - Application logic (models, controllers)
+  - `database/` - Database, migrations and seeders
+  - `tests/` - Automated tests
 
 ## Next Steps When Adding Code
 1. Document the main architecture in this file
@@ -48,6 +51,10 @@ Before committing:
 2. Database: Cards are kept in an SQLite database using Eloquent ORM for database interactions.
 3. API: The application exposes a RESTful API for managing friendship cards, allowing CRUD operations. The API endpoints will return HTML by default. API endpoints will also support JSON responses when requested via the `Accept: application/json` header.
 4. Frontend: The frontend is built using Blade templates with HTMLX for dynamic content updates without full page reloads. 
+5. Styling is done using Tailwind CSS. Enforce the next guidelines:
+   - Use existing utility classes wherever possible.
+   - Avoid adding new custom CSS unless absolutely necessary.
+   - Follow the established color scheme and design patterns.
 
 ## Data Models
 1. Card: Represents a friendship/contact card. Fields include:
@@ -69,10 +76,17 @@ Before committing:
    - updated_at (timestamp)
 
 ## Screens
-1. Card List View: Displays a list of all friendship cards with options to view, edit, or delete each card.
+1. Card List View: Displays a list of all friendship cards with options to view, edit, or delete each card. Supports grid and list views with sorting.
 2. Card Detail View: Displays detailed information about a specific friendship card, including its relationships to other cards.
 3. Card Creation/Edit View: Form for creating a new friendship card or editing an existing one. You can also add relationships to other cards from this view.
-4. Birthday calendar view: Displays upcoming birthdays of friends in a calendar format. Also shows the age they will be turning.
+4. Birthday calendar view: Displays upcoming birthdays of friends in a calendar format grouped by month. Shows the age they will be turning.
+5. Relationship Graph View: Interactive visual representation of relationships between friendship cards using Cytoscape.js. Features:
+   - Tree, circle, and grid layout options
+   - Parent-child relationships highlighted with red edges
+   - Clickable nodes to navigate to card details
+   - Zoom and pan controls
+   - Real-time visualization of the relationship network
+
 
 ## Relationships
 

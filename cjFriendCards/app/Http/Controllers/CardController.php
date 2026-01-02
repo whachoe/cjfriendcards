@@ -255,4 +255,45 @@ class CardController extends Controller
             'Content-Disposition' => 'attachment; filename="birthdays_' . date('Y-m-d_H-i-s') . '.ics"',
         ]);
     }
+
+    /**
+     * Display the relationship graph visualization.
+     */
+    public function relationshipGraph(Request $request)
+    {
+        $cards = Card::with('relationships.relatedCard', 'relatedRelationships.card')->get();
+        
+        if ($request->wantsJson()) {
+            // Build graph data for API consumers
+            $nodes = [];
+            $edges = [];
+            
+            foreach ($cards as $card) {
+                $nodes[] = [
+                    'data' => [
+                        'id' => $card->unique_name,
+                        'label' => $card->full_name,
+                        'url' => route('cards.show', $card),
+                    ]
+                ];
+                
+                foreach ($card->relationships as $rel) {
+                    $edges[] = [
+                        'data' => [
+                            'source' => $card->unique_name,
+                            'target' => $rel->relatedCard->unique_name,
+                            'label' => $rel->relationship_type,
+                        ]
+                    ];
+                }
+            }
+            
+            return response()->json([
+                'nodes' => $nodes,
+                'edges' => $edges,
+            ]);
+        }
+        
+        return view('cards.relationship-graph', compact('cards'));
+    }
 }
