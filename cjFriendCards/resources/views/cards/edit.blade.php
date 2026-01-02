@@ -128,8 +128,8 @@
                 </div>
 
                 <div class="flex gap-4">
-                    <button type="submit" class="bg-primary-accent text-white px-6 py-2 rounded hover:bg-primary-danger">Update Card</button>
-                    <a href="{{ route('cards.show', $card) }}" class="bg-primary-secondary text-primary-dark px-6 py-2 rounded hover:bg-primary-accent">Cancel</a>
+                    <button type="submit" class="bg-primary-accent text-white px-6 py-2 rounded hover:brightness-110 transition">Update Card</button>
+                    <a href="{{ route('cards.show', $card) }}" class="bg-primary-secondary text-primary-dark px-6 py-2 rounded hover:brightness-110 transition">Cancel</a>
                 </div>
             </form>
         </div>

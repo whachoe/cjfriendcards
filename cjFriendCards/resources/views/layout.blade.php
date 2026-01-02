@@ -18,7 +18,7 @@
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('cards.index') }}" class="text-primary-light hover:text-primary-accent">Cards</a>
                     <a href="{{ route('cards.birthday-calendar') }}" class="text-primary-light hover:text-primary-accent">Birthdays</a>
-                    <a href="{{ route('cards.create') }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:bg-primary-danger">New Card</a>
+                    <a href="{{ route('cards.create') }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:brightness-110 transition">New Card</a>
                 </div>
             </div>
         </div>

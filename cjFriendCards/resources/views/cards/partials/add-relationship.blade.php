@@ -55,7 +55,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="bg-primary-accent text-white px-6 py-2 rounded hover:bg-primary-danger">Add Relationship</button>
+        <button type="submit" class="bg-primary-accent text-white px-6 py-2 rounded hover:brightness-110 transition">Add Relationship</button>
     </form>
 </div>
 

@@ -407,10 +407,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 button {
     cursor: pointer;
     font-family: inherit;
@@ -449,6 +445,10 @@ button {
 
 .hover\:opacity-80:hover {
     opacity: 0.8;
+}
+
+.hover\:brightness-110:hover {
+    filter: brightness(1.1);
 }
 
 .italic {

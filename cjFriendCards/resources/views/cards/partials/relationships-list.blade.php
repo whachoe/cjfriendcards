@@ -103,8 +103,8 @@
             </div>
 
             <div class="flex gap-2 justify-end">
-                <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-primary-dark bg-primary-secondary rounded hover:bg-primary-accent">Cancel</button>
-                <button type="submit" class="px-4 py-2 bg-primary-accent text-white rounded hover:bg-primary-danger">Update</button>
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-primary-dark bg-primary-secondary rounded hover:brightness-110 transition">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-primary-accent text-white rounded hover:brightness-110 transition">Update</button>
             </div>
         </form>
     </div>

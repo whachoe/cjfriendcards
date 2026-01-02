@@ -90,12 +90,12 @@
         </div>
 
         <div class="flex gap-2 mt-6 flex-col">
-            <a href="{{ route('cards.edit', $card) }}" class="bg-primary-secondary text-primary-dark px-4 py-2 rounded hover:bg-primary-accent text-center">Edit</a>
-            <a href="{{ route('cards.export-vcard', $card) }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:bg-primary-secondary text-center">Export vCard</a>
+            <a href="{{ route('cards.edit', $card) }}" class="bg-primary-secondary text-primary-dark px-4 py-2 rounded hover:brightness-110 transition text-center">Edit</a>
+            <a href="{{ route('cards.export-vcard', $card) }}" class="bg-primary-accent text-white px-4 py-2 rounded hover:brightness-110 transition text-center">Export vCard</a>
             <form action="{{ route('cards.destroy', $card) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="w-full bg-primary-danger text-white px-4 py-2 rounded hover:bg-primary-dark">Delete</button>
+                <button type="submit" class="w-full bg-primary-danger text-white px-4 py-2 rounded hover:brightness-110 transition">Delete</button>
             </form>
         </div>
     </div>

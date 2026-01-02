@@ -11,7 +11,7 @@
 @if ($cards->isEmpty())
     <div class="bg-primary-light rounded-lg shadow p-8 text-center border border-primary-accent">
         <p class="text-primary-dark mb-4">No birthdays tracked yet. Add birthday information to your cards!</p>
-        <a href="{{ route('cards.create') }}" class="bg-primary-accent text-white px-6 py-2 rounded hover:bg-primary-danger">Create Card</a>
+        <a href="{{ route('cards.create') }}" class="bg-primary-accent text-white px-6 py-2 rounded hover:brightness-110 transition">Create Card</a>
     </div>
 @else
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
