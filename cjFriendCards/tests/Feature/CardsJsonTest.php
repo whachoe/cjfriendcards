@@ -52,7 +52,7 @@ class CardsJsonTest extends TestCase
         $response = $this->getJson(route('cards.show', $card));
 
         $response->assertStatus(200)
-            ->assertJsonStructure(['data', 'relationships', 'related_relationships']);
+            ->assertJsonStructure(['data', 'relationships']);
     }
 
     public function test_update_returns_json()

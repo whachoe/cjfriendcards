@@ -48,26 +48,6 @@
                     </div>
                 </div>
             @endforeach
-
-            {{-- Inverse relationships (where this card is related_card_id) --}}
-            @foreach ($relatedRelationships ?? [] as $rel)
-                <div class="p-4 bg-primary-light rounded border border-primary-accent flex justify-between items-start opacity-75">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <a href="{{ route('cards.show', $rel->card) }}" class="text-primary-accent hover:underline font-medium">
-                                {{ $rel->card->full_name }}
-                            </a>
-                            <span class="bg-primary-light text-primary-dark text-xs font-semibold px-2 py-1 rounded border border-primary-accent">
-                                {{ ucfirst(str_replace('_', ' ', $rel->relationship_type)) }}
-                            </span>
-                            <span class="text-xs text-primary-danger italic">(connected by them)</span>
-                        </div>
-                        @if ($rel->notes)
-                            <p class="text-sm text-primary-dark">{{ $rel->notes }}</p>
-                        @endif
-                    </div>
-                </div>
-            @endforeach
         </div>
     @endif
 </div>

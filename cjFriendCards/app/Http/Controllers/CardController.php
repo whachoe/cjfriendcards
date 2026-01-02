@@ -78,17 +78,15 @@ class CardController extends Controller
     public function show(Request $request, Card $card)
     {
         $relationships = $card->relationships()->with('relatedCard')->get();
-        $relatedRelationships = $card->relatedRelationships()->with('card')->get();
 
         if ($request->wantsJson()) {
             return response()->json([
                 'data' => $card,
-                'relationships' => $relationships,
-                'related_relationships' => $relatedRelationships,
+                'relationships' => $relationships
             ]);
         }
 
-        return view('cards.show', compact('card', 'relationships', 'relatedRelationships'));
+        return view('cards.show', compact('card', 'relationships'));
     }
 
     /**

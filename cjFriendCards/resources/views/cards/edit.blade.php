@@ -167,7 +167,7 @@
 <div class="mt-8 space-y-6">
     <h2 class="text-2xl font-bold text-primary-dark">Manage Relationships</h2>
 
-    @include('cards.partials.relationships-list', ['relationships' => $card->relationships, 'relatedRelationships' => $card->relatedRelationships])
+    @include('cards.partials.relationships-list', ['relationships' => $card->relationships])
 
     @include('cards.partials.add-relationship', ['card' => $card])
 </div>

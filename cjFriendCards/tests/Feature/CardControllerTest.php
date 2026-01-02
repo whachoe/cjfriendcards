@@ -214,7 +214,6 @@ class CardControllerTest extends TestCase
         $response->assertViewIs('cards.show');
         $response->assertViewHas('card', $card);
         $response->assertViewHas('relationships');
-        $response->assertViewHas('relatedRelationships');
     }
 
     /**

@@ -84,7 +84,7 @@
             <div class="space-y-3">
                 <!-- <div class="bg-primary-light p-3 rounded border border-primary-accent"> -->
                     <p class="text-sm text-primary-danger">Total Relationships</p>
-                    <p class="text-2xl font-bold text-primary-accent">{{ $relationships->count() + $relatedRelationships->count() }}</p>
+                    <p class="text-2xl font-bold text-primary-accent">{{ $relationships->count() }}</p>
                 <!-- </div> -->
             </div>
         </div>
@@ -105,7 +105,7 @@
 <div class="mt-8 space-y-6">
     <h2 class="text-2xl font-bold text-primary-dark">Manage Relationships</h2>
 
-    @include('cards.partials.relationships-list', ['relationships' => $relationships, 'relatedRelationships' => $relatedRelationships])
+    @include('cards.partials.relationships-list', ['relationships' => $relationships])
 
     @include('cards.partials.add-relationship', ['card' => $card])
 </div>
