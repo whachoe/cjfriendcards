@@ -59,7 +59,7 @@
             @if ($card->birthday)
                 <div class="mb-4">
                     <p class="text-primary-danger text-sm">Birthday</p>
-                    <p class="text-primary-dark">{{ $card->birthday->format('F d, Y') }} (Age: {{ (int) abs(now()->diffInYears($card->birthday)) }} years)</p>
+                    <p class="text-primary-dark">{{ $card->birthday->format('F d, Y') }} (Age: {{ $card->getAge() }} years)</p>
                 </div>
             @endif
 

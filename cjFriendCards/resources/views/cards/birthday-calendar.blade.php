@@ -36,7 +36,7 @@
                                             {{ $card->full_name }}
                                         </a>
                                         <span class="text-xs font-semibold text-primary-dark bg-primary-secondary px-2 py-1 rounded">
-                                            Turns {{ (int) abs(now()->diffInYears($card->birthday)) + (now()->format('m-d') < $card->birthday->format('m-d') ? 0 : 1) }}
+                                            Turns {{ $card->getAgeOnNextBirthday() }}
                                         </span>
                                     </div>
                                     <p class="text-sm text-primary-dark">{{ $card->birthday->format('F d') }}</p>
@@ -71,7 +71,7 @@
                     if ($nextBirthday < now()) {
                         $nextBirthday->addYear();
                     }
-                    return $nextBirthday->diffInDays(now()) <= 30;
+                    return abs($nextBirthday->diffInDays(now())) <= 30;
                 });
             @endphp
             

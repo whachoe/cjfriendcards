@@ -151,7 +151,7 @@
                 @if ($card->birthday)
                     <div>
                         <p class="text-primary-danger">Current Age</p>
-                        <p class="text-primary-dark font-medium">{{ (int) abs(now()->diffInYears($card->birthday)) }} years</p>
+                        <p class="text-primary-dark font-medium">{{ $card->getAge() }} years</p>
                     </div>
                 @endif
                 <div class="pt-4 border-t border-primary-accent mt-4">

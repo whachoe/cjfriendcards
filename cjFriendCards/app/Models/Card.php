@@ -125,4 +125,39 @@ class Card extends Model
 
         return $vcard;
     }
+
+    function getAge(): ?int
+    {
+        if (!$this->birthday) {
+            return null;
+        }
+
+        $today = now();
+        $age = $today->year - $this->birthday->year;
+
+        if ($today->month < $this->birthday->month || ($today->month === $this->birthday->month && $today->day < $this->birthday->day)) {
+            $age--;
+        }
+
+        return $age;
+    }
+
+    /**
+     * Get the age on next birthday. 
+     * So if the birthday has not occurred yet this year, return current age. If it has occurred, return current age + 1.
+     */
+    function getAgeOnNextBirthday(): ?int 
+    {
+        $currentAge = $this->getAge();
+        if ($currentAge === null) {
+            return null;
+        }
+
+        $today = now();
+        if ($today->month < $this->birthday->month || ($today->month === $this->birthday->month && $today->day < $this->birthday->day)) {
+            return $currentAge + 1;
+        } else {
+            return $currentAge;
+        }
+    }   
 }
