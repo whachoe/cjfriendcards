@@ -126,7 +126,7 @@ class CardControllerTest extends TestCase
     public function test_store_creates_card_with_minimal_data(): void
     {
         $data = [
-            'unique_name' => 'minimal_user',
+            'unique_name' => 'minimal-user',
             'first_name' => 'Min',
             'last_name' => 'User',
         ];
@@ -135,7 +135,7 @@ class CardControllerTest extends TestCase
 
         $response->assertRedirect(route('cards.index'));
         $this->assertDatabaseHas('cards', [
-            'unique_name' => 'minimal_user',
+            'unique_name' => 'minimal-user',
             'first_name' => 'Min',
             'last_name' => 'User',
         ]);
@@ -195,6 +195,48 @@ class CardControllerTest extends TestCase
         $response = $this->post(route('cards.store'), $data);
 
         $response->assertSessionHasErrors('email_work');
+    }
+
+    /**
+     * Test store validates unique_name format (only a-z and hyphen allowed).
+     */
+    public function test_store_fails_with_invalid_unique_name_format(): void
+    {
+        $invalidNames = [
+            'john@doe',      // contains @
+            'john_doe',      // contains underscore
+            'john doe',      // contains space
+            'john.doe',      // contains dot
+            'john123',       // contains numbers
+            'John-Doe',      // contains uppercase
+            'john-doe!',     // contains special char
+        ];
+
+        foreach ($invalidNames as $invalidName) {
+            $data = [
+                'unique_name' => $invalidName,
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+            ];
+
+            $response = $this->post(route('cards.store'), $data);
+
+            $response->assertSessionHasErrors('unique_name');
+        }
+
+        // Valid format should pass
+        $validData = [
+            'unique_name' => 'john-doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ];
+
+        $response = $this->post(route('cards.store'), $validData);
+
+        $response->assertRedirect(route('cards.index'));
+        $this->assertDatabaseHas('cards', [
+            'unique_name' => 'john-doe',
+        ]);
     }
 
     /**

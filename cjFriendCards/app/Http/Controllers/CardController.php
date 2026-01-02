@@ -49,7 +49,7 @@ class CardController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'unique_name' => 'required|string|unique:cards,unique_name',
+            'unique_name' => 'required|string|unique:cards,unique_name|regex:/^[a-z-]+$/',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'address' => 'nullable|string',
@@ -108,7 +108,7 @@ class CardController extends Controller
     public function update(Request $request, Card $card)
     {
         $validated = $request->validate([
-            'unique_name' => 'required|string|unique:cards,unique_name,' . $card->id,
+            'unique_name' => 'required|string|unique:cards,unique_name,' . $card->id . '|regex:/^[a-z-]+$/',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'address' => 'nullable|string',

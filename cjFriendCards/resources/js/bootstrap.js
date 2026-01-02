@@ -11,8 +11,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
           const uniqueNameInput = document.getElementById('unique_name');
 
           function generateUniqueName() {
-              const firstName = firstNameInput.value.toLowerCase().trim().replaceAll(' ','-');
-              const lastName = lastNameInput.value.toLowerCase().trim().replaceAll(' ','-');
+              const firstName = firstNameInput.value.toLowerCase().trim().replace(/[^a-z]/g, '');
+              const lastName = lastNameInput.value.toLowerCase().trim().replace(/[^a-z]/g, '');
               
               if (firstName && lastName) {
                   uniqueNameInput.value = `${firstName}-${lastName}`;
