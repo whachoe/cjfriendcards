@@ -44,12 +44,12 @@
                     @endif
                     
                     @if ($card->birthday)
-                        <p class="text-primary-dark mb-4"><strong>Birthday:</strong> {{ $card->birthday->format('M d, Y') }}</p>
+                        <p class="text-primary-dark mb-4"><strong>Birthday:</strong> {{ $card->birthday->format('M d, Y') }} ({{ $card->getAge() }})</p>
                     @endif
                     
-                    @if ($card->notes)
+                    <!-- @if ($card->notes)
                         <p class="text-primary-dark mb-4 text-sm">{{ Str::limit($card->notes, 100) }}</p>
-                    @endif
+                    @endif -->
                 </div>
 
                 <div class="px-6 pb-6">
