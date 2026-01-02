@@ -85,6 +85,11 @@ Before committing:
    - colleague <-> colleague
    - acquaintance <-> acquaintance
    - family <-> family
+3. If a relationship is deleted from one card, the corresponding opposite relationship should also be deleted from the related card.
+4. When a new relationship of the following type is created and the address-field is not filled in yet, autofill it from the related card. These relationship types are:
+   - spouse
+   - child
+   - parent
 
 ## Things for the AI to keep in mind
 - Follow Laravel best practices for structuring controllers, models, views, and routes.

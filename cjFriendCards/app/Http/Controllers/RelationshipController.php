@@ -57,6 +57,34 @@ class RelationshipController extends Controller
         $validated['card_id'] = $card->id;
         $relationship = Relationship::create($validated);
 
+        // Rule 2: Create opposite relationship automatically
+        if (Relationship::hasOpposite($validated['relationship_type'])) {
+            $oppositeType = Relationship::getOppositeType($validated['relationship_type']);
+            
+            // Check if opposite relationship already exists
+            $oppositeExists = Relationship::where('card_id', $validated['related_card_id'])
+                ->where('related_card_id', $card->id)
+                ->exists();
+
+            if (!$oppositeExists) {
+                Relationship::create([
+                    'card_id' => $validated['related_card_id'],
+                    'related_card_id' => $card->id,
+                    'relationship_type' => $oppositeType,
+                    'notes' => $validated['notes'] ?? null,
+                ]);
+            }
+        }
+
+        // Rule 4: Autofill address for spouse/child/parent relationships
+        if (in_array($validated['relationship_type'], ['spouse', 'child', 'parent'])) {
+            $relatedCard = Card::find($validated['related_card_id']);
+            
+            if ($relatedCard && $relatedCard->address && !$card->address) {
+                $card->update(['address' => $relatedCard->address]);
+            }
+        }
+
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Relationship added successfully.', 'data' => $relationship], 201);
         }
@@ -79,7 +107,23 @@ class RelationshipController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $oldType = $relationship->relationship_type;
         $relationship->update($validated);
+
+        // Update opposite relationship if it exists
+        if (Relationship::hasOpposite($oldType) || Relationship::hasOpposite($validated['relationship_type'])) {
+            $oppositeRelationship = Relationship::where('card_id', $relationship->related_card_id)
+                ->where('related_card_id', $relationship->card_id)
+                ->first();
+
+            if ($oppositeRelationship) {
+                $newOppositeType = Relationship::getOppositeType($validated['relationship_type']);
+                $oppositeRelationship->update([
+                    'relationship_type' => $newOppositeType,
+                    'notes' => $validated['notes'] ?? null,
+                ]);
+            }
+        }
 
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Relationship updated successfully.', 'data' => $relationship]);
@@ -96,6 +140,13 @@ class RelationshipController extends Controller
         // Ensure the relationship belongs to this card
         if ($relationship->card_id !== $card->id) {
             abort(403);
+        }
+
+        // Rule 3: Delete opposite relationship
+        if (Relationship::hasOpposite($relationship->relationship_type)) {
+            Relationship::where('card_id', $relationship->related_card_id)
+                ->where('related_card_id', $relationship->card_id)
+                ->delete();
         }
 
         $relationship->delete();
