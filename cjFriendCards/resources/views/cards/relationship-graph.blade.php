@@ -54,7 +54,7 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+@vite(['resources/js/cytoscape.min.js'])
 <script>
     @if(!$cards->isEmpty())
     document.addEventListener('DOMContentLoaded', function() {
@@ -76,8 +76,8 @@
                 @foreach($card->relationships as $rel)
                 {
                     data: {
-                        source: '{{ $card->unique_name }}',
-                        target: '{{ $rel->relatedCard->unique_name }}',
+                        source: '{{ in_array($rel->relationship_type, ["parent", "child"]) ? $rel->relatedCard->unique_name : $card->unique_name }}',
+                        target: '{{ in_array($rel->relationship_type, ["parent", "child"]) ? $card->unique_name : $rel->relatedCard->unique_name }}',
                         label: '{{ $rel->relationship_type }}',
                         isParentChild: {{ in_array($rel->relationship_type, ['parent', 'child']) ? 'true' : 'false' }}
                     }
@@ -150,7 +150,13 @@
                 directed: true,
                 spacingFactor: 1.5,
                 animate: true,
-                animationDuration: 500
+                animationDuration: 500,
+                avoidOverlap: true,
+                nodeDimensionsIncludeLabels: true,
+                roots: undefined,
+                maximal: false,
+                circle: false,
+                grid: false
             }
         });
 
@@ -170,7 +176,13 @@
                 directed: true,
                 spacingFactor: 1.5,
                 animate: true,
-                animationDuration: 500
+                animationDuration: 500,
+                avoidOverlap: true,
+                nodeDimensionsIncludeLabels: true,
+                roots: undefined,
+                maximal: false,
+                circle: false,
+                grid: false
             }).run();
             
             // Update button states
