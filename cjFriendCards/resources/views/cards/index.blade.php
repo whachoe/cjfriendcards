@@ -6,16 +6,20 @@
 <div class="mb-6 flex justify-between items-center">
     <h1 class="text-3xl font-bold text-primary-dark">Cardbox</h1>
     <div class="flex items-center gap-3">
-        <span>Sort by Last Name</span>
-        <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="text-primary-accent px-4 py-2 rounded hover:text-primary-danger flex items-center gap-2">            
-            <span class="text-sm">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
-        </a>
+
         <div class="flex gap-2">
-            <button id="view-grid-btn" class="view-toggle active w-10 h-10 flex items-center justify-center transition" title="Grid view">
+            <a href="{{ route('cards.index', ['sort_order' => $nextSortOrder]) }}" class="text-primary-accent py-2 rounded hover:text-primary-danger flex items-center gap-2">            
+            <span class="text-xl">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+        </a>
+
+            <button id="view-grid-btn" class="view-toggle w-5 h-10 flex items-center justify-center transition" title="Grid view">
                 <span class="text-xl">⊞</span>
             </button>
-            <button id="view-list-btn" class="view-toggle w-10 h-10 flex items-center justify-center transition" title="List view">
+            <button id="view-list-btn" class="view-toggle w-5 h-10 flex items-center justify-center transition" title="List view">
                 <span class="text-xl">≡</span>
+            </button>
+            <button id="view-cardbox-btn" class="view-toggle active w-5 h-10 flex items-center justify-center transition" title="Cardbox view">
+                <span class="text-xl">▤</span>
             </button>
         </div>
     </div>
@@ -27,8 +31,69 @@
         <a href="{{ route('cards.create') }}" class="bg-primary-accent text-white px-6 py-2 rounded hover:brightness-110 transition">Create Card</a>
     </div>
 @else
+    <!-- Cardbox View -->
+    <div id="cardbox-view" class="filing-box-container">
+        <button id="card-nav-prev" class="card-nav-arrow card-nav-left" onclick="navigateCard(-1)">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </button>
+        
+        <div class="filing-box">
+            <div class="filing-box-interior">
+                @foreach ($cards as $index => $card)
+                    <div class="filing-card" data-card-index="{{ $index }}" onclick="flipCardsTo({{ $index }})">
+                    <div class="filing-card-content rounded-lg border-2 border-primary-dark" style="background-color: var(--color-light); background-image: url('{{ asset('images/card-bg.jpg') }}'); background-size: cover;">
+                        <div class="filing-card-tab-top">
+                            <span class="text-sm font-bold text-white">{{ strtoupper(substr($card->last_name, 0, 1)) }}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="mb-2">
+                                <h3 class="text-base font-semibold text-primary-dark">{{ $card->full_name }}</h3>
+                                <p class="text-primary-danger text-xs">{{ $card->unique_name }}</p>
+                            </div>
+                            
+                            @if ($card->phone)
+                                <p class="text-primary-dark text-xs mb-1"><strong>Phone:</strong> {{ $card->phone }}</p>
+                            @endif
+                            
+                            @if ($card->email_personal)
+                                <p class="text-primary-dark text-xs mb-1"><strong>Email:</strong> {{ $card->email_personal }}</p>
+                            @endif
+                            
+                            @if ($card->birthday)
+                                <p class="text-primary-dark text-xs mb-2"><strong>Birthday:</strong> {{ $card->birthday->format('M d') }}</p>
+                            @endif
+
+                            <div class="flex gap-1 mt-3">
+                                <a href="{{ route('cards.show', $card) }}" class="flex-1 bg-primary-accent text-white text-center px-2 py-1 rounded hover:brightness-110 transition text-xs flex justify-center items-center" title="View" onclick="event.stopPropagation()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </a>
+                                <a href="{{ route('cards.edit', $card) }}" class="flex-1 bg-primary-secondary text-primary-dark text-center px-2 py-1 rounded hover:brightness-110 transition text-xs flex justify-center items-center" title="Edit" onclick="event.stopPropagation()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    
+    <button id="card-nav-next" class="card-nav-arrow card-nav-right" onclick="navigateCard(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+    </button>
+</div>
+
     <!-- Grid View -->
-    <div id="grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div id="grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
         @foreach ($cards as $card)
             <div class="rounded-lg border border-primary-accent card-item flex flex-col h-full" style="background-color: var(--color-light); background-image: url('{{ asset('images/card-bg.jpg') }}'); background-size: cover; background-attachment: fixed;">
                 <div class="p-6 flex-grow">
@@ -124,26 +189,68 @@
     </div>
 
     <script>
+        let currentCardIndex = 0;
+        const totalCards = {{ count($cards) }};
+
+        function flipCardsTo(targetIndex) {
+            const cards = document.querySelectorAll('.filing-card');
+            currentCardIndex = targetIndex;
+            cards.forEach((card, index) => {
+                if (index < targetIndex) {
+                    // Flip cards in front to the side
+                    card.classList.add('flipped');
+                } else {
+                    // Reset cards at or behind target
+                    card.classList.remove('flipped');
+                }
+            });
+        }
+
+        function navigateCard(direction) {
+            const newIndex = currentCardIndex + direction;
+            
+            // Ensure we stay within bounds
+            if (newIndex >= 0 && newIndex < totalCards) {
+                flipCardsTo(newIndex);
+            }
+        }
+
+        document.getElementById('view-cardbox-btn').addEventListener('click', function() {
+            document.getElementById('cardbox-view').classList.remove('hidden');
+            document.getElementById('grid-view').classList.add('hidden');
+            document.getElementById('list-view').classList.add('hidden');
+            document.getElementById('view-cardbox-btn').classList.add('active');
+            document.getElementById('view-grid-btn').classList.remove('active');
+            document.getElementById('view-list-btn').classList.remove('active');
+            localStorage.setItem('cardViewMode', 'cardbox');
+        });
+
         document.getElementById('view-grid-btn').addEventListener('click', function() {
+            document.getElementById('cardbox-view').classList.add('hidden');
             document.getElementById('grid-view').classList.remove('hidden');
             document.getElementById('list-view').classList.add('hidden');
             document.getElementById('view-grid-btn').classList.add('active');
+            document.getElementById('view-cardbox-btn').classList.remove('active');
             document.getElementById('view-list-btn').classList.remove('active');
             localStorage.setItem('cardViewMode', 'grid');
         });
 
         document.getElementById('view-list-btn').addEventListener('click', function() {
+            document.getElementById('cardbox-view').classList.add('hidden');
             document.getElementById('grid-view').classList.add('hidden');
             document.getElementById('list-view').classList.remove('hidden');
             document.getElementById('view-grid-btn').classList.remove('active');
+            document.getElementById('view-cardbox-btn').classList.remove('active');
             document.getElementById('view-list-btn').classList.add('active');
             localStorage.setItem('cardViewMode', 'list');
         });
 
         // Load saved view preference
-        const savedViewMode = localStorage.getItem('cardViewMode') || 'grid';
+        const savedViewMode = localStorage.getItem('cardViewMode') || 'cardbox';
         if (savedViewMode === 'list') {
             document.getElementById('view-list-btn').click();
+        } else if (savedViewMode === 'grid') {
+            document.getElementById('view-grid-btn').click();
         }
     </script>
 @endif
